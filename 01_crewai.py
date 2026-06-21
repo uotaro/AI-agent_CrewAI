@@ -9,7 +9,7 @@
 # 2. LLMのAPIサーバーを用意する（例：llama.cppのAPIサーバー、またはGoogle Gemini API）
 # 3. LLMの設定を行う（下記コード内のコメントを参照）
 # ===================================================================
-
+import os
 from dotenv import load_dotenv
 from crewai import Agent, Task, Crew, Process, LLM
 
@@ -27,7 +27,7 @@ if use_local_llm:
     llm = LLM(
         model="openai/Llama-3.3-8B-Instruct.Q4_K_S.gguf", # openai/ を頭につける
         base_url="http://localhost:8080/v1",
-        api_key="llamacpp",
+        api_key=os.getenv("LLAMA_API_TOKEN"),
         temperature=0.7
     )
 else:

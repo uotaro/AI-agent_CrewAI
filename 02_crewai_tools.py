@@ -11,13 +11,13 @@
 # 3. 
 # 3. LLMの設定を行う（下記コード内のコメントを参照）
 # ===================================================================
-
+import os
 from dotenv import load_dotenv
 load_dotenv()  # SerperDevTool() を呼ぶ前に .env 読み込んで SERPER_API_KEY を環境変数から読み込む
 from crewai import Agent, Task, Crew, Process, LLM
 from crewai_tools import SerperDevTool, ScrapeWebsiteTool
 
-use_local_llm = False  # True: LAN内の llama.cpp APIサーバーを使用する, False: Google Gemini APIを使用する
+use_local_llm = True  # True: LAN内の llama.cpp APIサーバーを使用する, False: Google Gemini APIを使用する
 
 #===================================================================
 # litellm.completion をラップして自動修復 ※ llama.cpp APIサーバーを使う場合の一時的な対処
@@ -56,7 +56,7 @@ if use_local_llm:
     llm = LLM(
         model="openai/Llama-3.3-8B-Instruct.Q4_K_S.gguf", # openai/ を頭につける
         base_url="http://localhost:8080/v1",
-        api_key="llamacpp",
+        api_key=os.getenv("LLAMA_API_TOKEN"),
         temperature=0.7
     )
 else:
